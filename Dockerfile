@@ -1,11 +1,11 @@
-FROM mhart/alpine-node
+FROM alpine:edge
 
 WORKDIR /usr/src/app
 COPY Gemfile /usr/src/app/
 COPY Gemfile.lock /usr/src/app/
 
-RUN npm install -g coffeelint && \
-    apk --update add ruby ruby-dev ruby-bundler build-base && \
+RUN apk --update add nodejs ruby ruby-dev ruby-bundler build-base && \
+    npm install -g coffeelint && \
     bundle install -j 4 && \
     apk del build-base && rm -fr /usr/share/ri
 
