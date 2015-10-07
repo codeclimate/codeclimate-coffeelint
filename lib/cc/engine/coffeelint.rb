@@ -1,5 +1,6 @@
 require "json"
-require 'cc/engine/coffeelint_results'
+require "cc/engine/coffeelint_results"
+require "cc/engine/analyzable_files"
 
 module CC
   module Engine
@@ -13,7 +14,7 @@ module CC
       def run
         coffeelint_results.each do |path, errors|
           path = path.gsub(/\A\.\//, '')
-          unless exclude_path?(path)
+          if include_path?(path)
             errors.each do |error|
               issue = {
                 type: "Issue",
@@ -37,9 +38,12 @@ module CC
 
       private
 
-      def exclude_path?(path)
-        exclusions = @engine_config['exclude_paths'] || []
-        exclusions.include?(path)
+      def include_path?(path)
+        analyzable_files.include?(path)
+      end
+
+      def analyzable_files
+        @files ||= AnalyzableFiles.new(@directory, @engine_config).all
       end
 
       def coffeelint_results
