@@ -20,7 +20,7 @@ module CC
                 type: "Issue",
                 description: error["message"],
                 check_name: error["rule"],
-                categories: ["Style"],
+                categories: [category(error['name'])],
                 location: {
                   path: path,
                   lines: {
@@ -60,6 +60,19 @@ module CC
         default = 50_000
         ERROR_NAMES_TO_REMEDIATION_POINTS[error_name] || default
       end
+
+      def category(error_name)
+        default = 'Style'
+        ERROR_NAMES_TO_CATEGORY[error_name] || default
+      end
+
+      ERROR_NAMES_TO_CATEGORY = {
+        'cyclomatic_complexity' => 'Complexity',
+        'coffeescript_error' => 'Bug Risk',
+        'missing_fat_arrows' => 'Bug Risk',
+        'no_empty_functions' => 'Bug Risk',
+        'no_interpolation_in_single_quotes' => 'Bug Risk'
+      }
 
       ERROR_NAMES_TO_REMEDIATION_POINTS = {
         'arrow_spacing' => 50_000,
