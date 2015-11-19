@@ -9,6 +9,8 @@ module CC
         @directory = directory
         @engine_config = engine_config
         @io = io
+
+        Dir.chdir(@directory)
       end
 
       def run
@@ -43,14 +45,12 @@ module CC
       end
 
       def analyzable_files
-        @files ||= AnalyzableFiles.new(@directory, @engine_config).all
+        @files ||= AnalyzableFiles.new(@engine_config).all
       end
 
       def coffeelint_results
         unless @coffeelint_results
-          runner = CoffeelintResults.new(
-            @directory, config: @engine_config['config']
-          )
+          runner = CoffeelintResults.new(@engine_config['config'])
           @coffeelint_results = runner.results
         end
         @coffeelint_results

@@ -1,8 +1,7 @@
 module CC
   module Engine
     class AnalyzableFiles
-      def initialize(directory, config)
-        @directory = directory
+      def initialize(config)
         @config = config
       end
 
@@ -19,7 +18,7 @@ module CC
       def fetch_files(paths)
         paths.map do |path|
           if path =~ %r{/$}
-            Dir.glob("#{path}/**/*.coffee")
+            Dir.glob("#{path}**/*.coffee")
           else
             path if path =~ /\.coffee$/
           end
@@ -27,13 +26,17 @@ module CC
       end
 
       def build_files_with_inclusions(inclusions)
-        fetch_files(inclusions)
+        if inclusions == ["./"]
+          Dir.glob("**/*.coffee")
+        else
+          fetch_files(inclusions)
+        end
       end
 
       def build_files_with_exclusions(exclusions)
-        files = Dir.glob("#{@directory}/**/*.coffee")
+        files = Dir.glob("**/*.coffee")
         excluded_files = fetch_files(exclusions)
-        files.reject { |f| exclusions.include?(f) }
+        files - excluded_files
       end
     end
   end
