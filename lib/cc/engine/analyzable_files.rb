@@ -1,8 +1,7 @@
 module CC
   module Engine
     class AnalyzableFiles
-      def initialize(directory, config)
-        @directory = directory
+      def initialize(config)
         @config = config
       end
 
@@ -35,9 +34,9 @@ module CC
       end
 
       def build_files_with_exclusions(exclusions)
-        files = Dir.glob("#{@directory}/**/*.coffee")
+        files = Dir.glob("**/*.coffee")
         excluded_files = fetch_files(exclusions)
-        files.reject { |f| exclusions.include?(f) }
+        files - excluded_files
       end
     end
   end

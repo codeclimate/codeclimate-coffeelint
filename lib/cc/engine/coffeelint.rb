@@ -45,7 +45,7 @@ module CC
       end
 
       def analyzable_files
-        @files ||= AnalyzableFiles.new(@directory, @engine_config).all
+        @files ||= AnalyzableFiles.new(@engine_config).all
       end
 
       def coffeelint_results
