@@ -10,7 +10,7 @@ module CC
         @engine_config = engine_config
         @io = io
 
-        Dir.chdir("/code")
+        Dir.chdir(@directory)
       end
 
       def run
