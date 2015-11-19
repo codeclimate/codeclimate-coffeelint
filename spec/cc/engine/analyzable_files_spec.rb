@@ -24,9 +24,9 @@ module CC::Engine
           analyzable_files = AnalyzableFiles.new({
             "include_paths" => ["foo/", "bar/"]
           })
-          expect(analyzable_files.all).to eq([
-            "foo/bar.coffee",
+          expect(analyzable_files.all.sort).to eq([
             "bar/foo.coffee",
+            "foo/bar.coffee",
           ])
         end
       end
@@ -40,7 +40,7 @@ module CC::Engine
           analyzable_files = AnalyzableFiles.new({
             "include_paths" => ["./"]
           })
-          expect(analyzable_files.all).to eq([
+          expect(analyzable_files.all.sort).to eq([
             "foo/bar.coffee",
             "foo/baz/wat.coffee",
             "root.coffee",
@@ -58,7 +58,7 @@ module CC::Engine
         analyzable_files = AnalyzableFiles.new({
           "exclude_paths" => ["bar/"]
         })
-        expect(analyzable_files.all).to eq([
+        expect(analyzable_files.all.sort).to eq([
           "foo/bar.coffee",
           "root.coffee"
         ])
