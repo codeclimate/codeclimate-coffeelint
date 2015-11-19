@@ -10,6 +10,14 @@ module CC::Engine
           receive(:`).with(expected_cmd).and_return("{}")
         results.results
       end
+
+      it "passes no config if file path is empty string" do
+        results = CoffeelintResults.new(".", ["."], "")
+        expected_cmd = "coffeelint -q --reporter raw ."
+        expect(results).to \
+          receive(:`).with(expected_cmd).and_return("{}")
+        results.results
+      end
     end
   end
 end

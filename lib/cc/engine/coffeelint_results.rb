@@ -12,7 +12,7 @@ module CC
       def results
         escaped_files = Shellwords.join(@files)
         cmd = "coffeelint"
-        cmd << " -f #{@config}" if @config
+        cmd << " -f #{@config}" if @config && @config != ""
         cmd << " -q --reporter raw #{escaped_files}"
         Dir.chdir(@directory) do
           JSON.parse(`#{cmd}`)
