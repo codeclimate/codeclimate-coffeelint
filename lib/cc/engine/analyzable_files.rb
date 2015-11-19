@@ -19,7 +19,7 @@ module CC
       def fetch_files(paths)
         paths.map do |path|
           if path =~ %r{/$}
-            Dir.glob("#{path}/**/*.coffee")
+            Dir.glob("#{path}**/*.coffee")
           else
             path if path =~ /\.coffee$/
           end
@@ -27,7 +27,11 @@ module CC
       end
 
       def build_files_with_inclusions(inclusions)
-        fetch_files(inclusions)
+        if inclusions == ["./"]
+          Dir.glob("**/*.coffee")
+        else
+          fetch_files(inclusions)
+        end
       end
 
       def build_files_with_exclusions(exclusions)

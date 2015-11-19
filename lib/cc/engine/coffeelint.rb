@@ -9,6 +9,8 @@ module CC
         @directory = directory
         @engine_config = engine_config
         @io = io
+
+        Dir.chdir("/code")
       end
 
       def run
@@ -49,7 +51,7 @@ module CC
       def coffeelint_results
         unless @coffeelint_results
           runner = CoffeelintResults.new(
-            @directory, config: @engine_config['config']
+            config: @engine_config['config']
           )
           @coffeelint_results = runner.results
         end
