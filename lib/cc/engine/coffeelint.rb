@@ -50,9 +50,7 @@ module CC
 
       def coffeelint_results
         unless @coffeelint_results
-          runner = CoffeelintResults.new(
-            config: @engine_config['config']
-          )
+          runner = CoffeelintResults.new(@engine_config['config'])
           @coffeelint_results = runner.results
         end
         @coffeelint_results

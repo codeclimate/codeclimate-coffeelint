@@ -1,7 +1,7 @@
 module CC
   module Engine
     class CoffeelintResults
-      def initialize(config: nil)
+      def initialize(config)
         @config = config
       end
 
