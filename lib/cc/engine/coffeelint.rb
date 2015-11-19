@@ -13,43 +13,38 @@ module CC
 
       def run
         coffeelint_results.each do |path, errors|
-          path = path.gsub(/\A\.\//, '')
-          if include_path?(path)
-            errors.each do |error|
-              issue = {
-                type: "Issue",
-                description: error["message"],
-                check_name: error["rule"],
-                categories: [category(error['name'])],
-                location: {
-                  path: path,
-                  lines: {
-                    begin: error["lineNumber"],
-                    end: error["lineNumber"]
-                  }
-                },
-                remediation_points: remediation_points(error['name'])
-              }
-              @io.print("#{issue.to_json}\0")
-            end
+          errors.each do |error|
+            issue = {
+              type: "Issue",
+              description: error["message"],
+              check_name: error["rule"],
+              categories: [category(error['name'])],
+              location: {
+                path: path,
+                lines: {
+                  begin: error["lineNumber"],
+                  end: error["lineNumber"]
+                }
+              },
+              remediation_points: remediation_points(error['name'])
+            }
+            @io.print("#{issue.to_json}\0")
           end
         end
       end
 
       private
 
-      def include_path?(path)
-        analyzable_files.include?(path)
-      end
-
       def analyzable_files
-        @files ||= AnalyzableFiles.new(@directory, @engine_config).all
+        @files ||= AnalyzableFiles.new(@engine_config).all
       end
 
       def coffeelint_results
         unless @coffeelint_results
           runner = CoffeelintResults.new(
-            @directory, config: @engine_config['config']
+            @directory,
+            analyzable_files,
+            @engine_config['config']
           )
           @coffeelint_results = runner.results
         end

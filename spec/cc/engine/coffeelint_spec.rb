@@ -1,80 +1,86 @@
 require 'spec_helper'
+require 'tmpdir'
 
 module CC::Engine
   describe Coffeelint do
+    around do |example|
+      tmp_dir = Dir.mktmpdir
+
+      Dir.chdir(tmp_dir) do
+        example.run
+      end
+
+      FileUtils.rm_rf(tmp_dir)
+    end
+
     describe "#run" do
-      let(:mock_io) { double }
-      let(:result) do
-        {
-          './cool.coffee' => [
-            {
-              "name" => "indentation",
-              "value" => 2,
-              "level" => "error",
-              "message" => "Line contains inconsistent indentation",
-              "description" => "",
-              "context" => "Expected 2 got 4",
-              "lineNumber" => 2,
-              "line" => "    if num is 1",
-              "rule" => "indentation"
-            }
-          ]
-        }
+      it "prints out results when include paths is ./" do
+        make_file("foo.coffee", "a" * 90)
+        make_file("bar.coffee", "a" * 90)
+        io = double(print: nil)
+
+        Coffeelint.new(
+          directory: Dir.pwd,
+          io: io,
+          engine_config: { "include_paths" => ["./"] }
+        ).run
+
+        expect(io).to have_received(:print).twice
       end
 
-      let(:second_result) do
-        {
-          './uncool.coffee' => [
-            {
-              "name" => "max_line_length",
-              "value" => 2,
-              "level" => "error",
-              "message" => "Line exceeds maximum allowed length",
-              "description" => "",
-              "context" => "Length is 114, max is 80",
-              "lineNumber" => 2,
-              "line" => "    if num is 1",
-              "rule" => "max_line_length"
-            }
-          ]
-        }
+      it "prints out results for specific files and folders" do
+        make_file("foo.coffee", "a" * 90)
+        make_file("wat.coffee", "a" * 90)
+        make_file("bar.coffee", "a" * 90)
+        make_file("baz/other.coffee", "a" * 90)
+        io = double(print: nil)
+
+        Coffeelint.new(
+          directory: Dir.pwd,
+          io: io,
+          engine_config: {
+            "include_paths" => ["baz/", "foo.coffee", "wat.coffee"]
+          }
+        ).run
+
+        expect(io).to have_received(:print).exactly(3).times
       end
 
-      let(:results) { result.merge(second_result) }
+      it "prints out the proper message" do
+        make_file("foo.coffee", "a" * 90)
+        io = double(print: nil)
 
-      it "should process results" do
-        allow_any_instance_of(CoffeelintResults).to receive(:results).and_return(result)
-        allow_any_instance_of(AnalyzableFiles).to receive(:all).and_return(["cool.coffee"])
-        expect(mock_io).to receive(:print).
-          with("{\"type\":\"Issue\",\"description\":\"Line contains inconsistent indentation\",\"check_name\":\"indentation\",\"categories\":[\"Style\"],\"location\":{\"path\":\"cool.coffee\",\"lines\":{\"begin\":2,\"end\":2}},\"remediation_points\":250000}\u0000")
+        Coffeelint.new(
+          directory: Dir.pwd,
+          io: io,
+          engine_config: {
+            "include_paths" => ["foo.coffee"]
+          }
+        ).run
 
-        Coffeelint.new(directory: '.', io: mock_io, engine_config: {}).run
+        expect(io).to have_received(:print).once.with("{\"type\":\"Issue\",\"description\":\"Line exceeds maximum allowed length\",\"check_name\":\"max_line_length\",\"categories\":[\"Style\"],\"location\":{\"path\":\"foo.coffee\",\"lines\":{\"begin\":1,\"end\":1}},\"remediation_points\":50000}\u0000")
       end
 
-      describe "with exclude paths config" do
-        it "doesn't return excluded files" do
-          allow_any_instance_of(CoffeelintResults).to receive(:results).and_return(result)
-          expect(mock_io).to receive(:print).never
+      it "works with files that have spaces" do
+        make_file("foo bar.coffee", "a" * 90)
+        io = double(print: nil)
 
-          Coffeelint.new(
-            directory: '.',
-            io: mock_io,
-            engine_config: {"exclude_paths" => ["cool.coffee"]}
-          ).run
-        end
+        Coffeelint.new(
+          directory: Dir.pwd,
+          io: io,
+          engine_config: {
+            "include_paths" => ["./"]
+          }
+        ).run
+
+        expect(io).to have_received(:print).once
       end
+    end
 
-      describe "with include paths config" do
-        it "returns only included files" do
-          allow_any_instance_of(CoffeelintResults).to receive(:results).and_return(results)
-          expect(mock_io).to receive(:print).once
-
-          Coffeelint.new(
-            directory: '.',
-            io: mock_io,
-            engine_config: {"include_paths" => ["cool.coffee"]}
-          ).run
-        end
+    def make_file(name, contents = "true")
+      FileUtils.mkdir_p(File.dirname(name))
+      File.open(name, 'w') do |f|
+        f.write(contents)
       end
     end
   end
