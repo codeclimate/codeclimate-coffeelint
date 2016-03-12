@@ -10,6 +10,8 @@ module CC
       end
 
       def results
+        return [] if @files.empty?
+
         escaped_files = Shellwords.join(@files)
         cmd = "coffeelint"
         cmd << " -f #{@config}" if @config
