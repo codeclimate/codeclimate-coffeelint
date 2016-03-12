@@ -46,6 +46,21 @@ module CC::Engine
         expect(io).to have_received(:print).exactly(3).times
       end
 
+      it "prints out no results if there are no analyzable files" do
+        make_file("foo.rb", "a" * 90)
+        io = double(print: nil)
+
+        Coffeelint.new(
+          directory: Dir.pwd,
+          io: io,
+          engine_config: {
+            "include_paths" => ["foo.rb"]
+          }
+        ).run
+
+        expect(io).to have_received(:print).exactly(0).times
+      end
+
       it "prints out the proper message" do
         make_file("foo.coffee", "a" * 90)
         io = double(print: nil)
