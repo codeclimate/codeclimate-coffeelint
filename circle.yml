@@ -3,15 +3,14 @@ machine:
     - docker
   environment:
     CLOUDSDK_CORE_DISABLE_PROMPTS: 1
-    image_name: codeclimate-coffeelint
 
 dependencies:
   override:
-    - docker build -t=$registry_root/$image_name:b$CIRCLE_BUILD_NUM .
+    - make image
 
 test:
   override:
-    - docker run $registry_root/$image_name:b$CIRCLE_BUILD_NUM bundle exec rake
+    - make citest
 
 deployment:
   registry:
@@ -20,8 +19,9 @@ deployment:
     commands:
       - curl https://sdk.cloud.google.com | bash
       - echo $gcloud_json_key_base64 | sed 's/ //g' | base64 -d > /tmp/gcloud_key.json
+      - docker tag codeclimate/codeclimate-coffeelint $registry_root/codeclimate-coffeelint:b$CIRCLE_BUILD_NUM
       - gcloud auth activate-service-account $gcloud_account_email --key-file /tmp/gcloud_key.json
-      - gcloud docker push $registry_root/$image_name:b$CIRCLE_BUILD_NUM
+      - gcloud docker push $registry_root/codeclimate-coffeelint:b$CIRCLE_BUILD_NUM
 
 notify:
   webhooks:
