@@ -5,10 +5,10 @@ module CC::Engine
     context "when given include_paths" do
       it "filters out non-directory and non-coffee files" do
         analyzable_files = AnalyzableFiles.new({
-          "include_paths" => ["foo/", "bar.py", "foo.coffee"]
+          "include_paths" => ["foo/", "bar.py", "foo.coffee", "foo.coffee.md", "foo.litcoffee"]
         })
 
-        expect(analyzable_files.all.sort).to eq(["foo.coffee", "foo/"])
+        expect(analyzable_files.all.sort).to eq(["foo.coffee", "foo.coffee.md", "foo.litcoffee", "foo/"])
       end
     end
 

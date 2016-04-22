@@ -17,7 +17,7 @@ module CC
 
       def filter_files(files)
         files.select do |file|
-          file.end_with?("/") || file.end_with?(".coffee")
+          file.end_with?("/") || file.end_with?(".coffee") || file.end_with?(".coffee.md") || file.end_with?(".litcoffee")
         end
       end
     end
