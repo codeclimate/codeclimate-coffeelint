@@ -1,3 +1,5 @@
+SUFFIXES = %w[/ .coffee .coffee.md .litcoffee].freeze
+
 module CC
   module Engine
     class AnalyzableFiles
@@ -17,7 +19,7 @@ module CC
 
       def filter_files(files)
         files.select do |file|
-          file.end_with?("/") || file.end_with?(".coffee")
+          SUFFIXES.any? { |suffix| file.end_with?(suffix) }
         end
       end
     end
