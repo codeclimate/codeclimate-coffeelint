@@ -1,8 +1,8 @@
-SUFFIXES = %w[/ .coffee .coffee.md .litcoffee].freeze
-
 module CC
   module Engine
     class AnalyzableFiles
+      SUFFIXES = %w[/ .coffee .coffee.md .litcoffee].freeze
+
       def initialize(config)
         @config = config
       end
