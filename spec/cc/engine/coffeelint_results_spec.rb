@@ -5,7 +5,8 @@ module CC::Engine
     describe "#results" do
       it "passes in a config file if specified" do
         results = CoffeelintResults.new(".", ["."], "mycoffeelint.json")
-        expected_cmd = "/usr/src/app/node_modules/.bin/coffeelint -f mycoffeelint.json -q --reporter raw ."
+        expected_executable = File.expand_path("../../../node_modules/.bin/coffeelint", __dir__)
+        expected_cmd = "#{expected_executable} -f mycoffeelint.json -q --reporter raw ."
         expect(results).to \
           receive(:`).with(expected_cmd).and_return("{}")
         results.results
