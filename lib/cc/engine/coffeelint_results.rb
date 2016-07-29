@@ -13,7 +13,7 @@ module CC
         return [] if @files.empty?
 
         escaped_files = Shellwords.join(@files)
-        cmd = "coffeelint"
+        cmd = File.expand_path("../../../node_modules/.bin/coffeelint", __dir__)
         cmd << " -f #{@config}" if @config
         cmd << " -q --reporter raw #{escaped_files}"
         Dir.chdir(@directory) do

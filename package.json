@@ -1,0 +1,20 @@
+{
+  "name": "codeclimate-coffeelint",
+  "version": "1.0.0",
+  "description": "Code Climate Engine for CoffeeLint",
+  "scripts": {
+    "test": "bundle exec rspec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeclimate/codeclimate-coffeelint.git"
+  },
+  "bugs": {
+    "url": "https://github.com/codeclimate/codeclimate-coffeelint/issues"
+  },
+  "homepage": "https://github.com/codeclimate/codeclimate-coffeelint#readme",
+  "dependencies": {
+    "coffee-react-transform": "^4.0.0",
+    "coffeelint": "^1.15.7"
+  }
+}
