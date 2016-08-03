@@ -12,8 +12,12 @@ RUN apk --update add nodejs ruby ruby-dev ruby-bundler build-base && \
     apk del build-base && rm -fr /usr/share/ri
 
 RUN adduser -u 9000 -D app
+COPY . /usr/src/app
+RUN chown -R app:app /usr/src/app
+
 USER app
 
-COPY . /usr/src/app
+VOLUME /code
+WORKDIR /code
 
 CMD ["/usr/src/app/bin/coffeelint"]
