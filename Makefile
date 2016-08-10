@@ -6,6 +6,6 @@ image:
 	docker build --tag $(IMAGE_NAME) .
 
 citest:
-	docker run --rm $(IMAGE_NAME) bundle exec rake
+	docker run --rm $(IMAGE_NAME) sh -c "cd /usr/src/app && bundle exec rake"
 
 test: image citest
