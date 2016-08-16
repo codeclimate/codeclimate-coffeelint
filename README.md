@@ -1,6 +1,6 @@
 # Code Climate CoffeeLint Engine
 
-[![Code Climate](https://codeclimate.com/repos/558418dce30ba07779007ea9/badges/6127feca9d51fedf2c6a/gpa.svg)](https://codeclimate.com/repos/558418dce30ba07779007ea9/feed)
+[![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate-coffeelint/badges/gpa.svg)](https://codeclimate.com/github/codeclimate/codeclimate-coffeelint)
 
 `codeclimate-CoffeeLint` is a Code Climate engine that wraps [CoffeeLint](http://www.coffeelint.org/). You can run it on your command line using the Code Climate CLI, or on our hosted analysis platform.
 
