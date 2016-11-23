@@ -76,6 +76,21 @@ module CC::Engine
         expect(io).to have_received(:print).once.with("{\"type\":\"Issue\",\"description\":\"Line exceeds maximum allowed length\",\"check_name\":\"max_line_length\",\"categories\":[\"Style\"],\"location\":{\"path\":\"foo.coffee\",\"lines\":{\"begin\":1,\"end\":1}},\"remediation_points\":50000}\u0000")
       end
 
+      it "includes warning-level issues" do
+        make_file("foo.coffee", "debugger")
+        io = double(print: nil)
+
+        Coffeelint.new(
+          directory: Dir.pwd,
+          io: io,
+          engine_config: {
+            "include_paths" => ["foo.coffee"]
+          }
+        ).run
+
+        expect(io).to have_received(:print).once.with("{\"type\":\"Issue\",\"description\":\"Found debugging code\",\"check_name\":\"no_debugger\",\"categories\":[\"Style\"],\"location\":{\"path\":\"foo.coffee\",\"lines\":{\"begin\":1,\"end\":1}},\"remediation_points\":50000}\u0000")
+      end
+
       it "works with files that have spaces" do
         make_file("foo bar.coffee", "a" * 90)
         io = double(print: nil)
