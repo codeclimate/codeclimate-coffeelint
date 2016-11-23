@@ -17,7 +17,7 @@ module CC
         escaped_files = Shellwords.join(files)
         cmd = File.expand_path("../../../node_modules/.bin/coffeelint", __dir__)
         cmd << " -f #{config_path}" if config_path
-        cmd << " -q --reporter raw #{escaped_files}"
+        cmd << " --reporter raw #{escaped_files}"
         Dir.chdir(directory) do
           JSON.parse(`#{cmd}`)
         end
