@@ -15,6 +15,6 @@
   "homepage": "https://github.com/codeclimate/codeclimate-coffeelint#readme",
   "dependencies": {
     "coffee-react-transform": "^4.0.0",
-    "coffeelint": "^1.15.7"
+    "coffeelint": "^1.16.0"
   }
 }
