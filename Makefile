@@ -1,11 +1,9 @@
-.PHONY: image citest test
+.PHONY: image test
 
 IMAGE_NAME ?= codeclimate/codeclimate-coffeelint
 
 image:
 	docker build --tag $(IMAGE_NAME) .
 
-citest:
-	docker run --rm $(IMAGE_NAME) sh -c "cd /usr/src/app && bundle exec rake"
-
-test: image citest
+test: image
+	docker run --rm $(IMAGE_NAME) sh -c "cd /usr/src/app && npm run test"

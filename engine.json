@@ -1,0 +1,14 @@
+{
+  "name": "CoffeeLint",
+  "description": "CoffeeLint is a style checker that helps keep CoffeeScript code clean and consistent.",
+  "maintainer": {
+    "name": "Code Climate",
+    "email": "hello@codeclimate.com"
+  },
+  "languages": [
+    "CoffeeScript"
+  ],
+  "version": "2.0.0",
+  "spec_version": "0.3.1"
+}
+

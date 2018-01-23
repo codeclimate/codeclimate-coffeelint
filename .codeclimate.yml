@@ -1,6 +1,5 @@
-engines:
-  rubocop:
+version: "2"
+plugints:
+  eslint:
     enabled: true
-ratings:
-  paths:
-  - "**.rb"
+    channel: "eslint-4"
