@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "json"
 require "cc/engine/coffeelint_results"
 require "cc/engine/analyzable_files"
@@ -5,7 +7,7 @@ require "cc/engine/analyzable_files"
 module CC
   module Engine
     class Coffeelint
-      def initialize(directory: , io: , engine_config: )
+      def initialize(directory:, io:, engine_config:)
         @directory = directory
         @engine_config = engine_config
         @io = io
@@ -36,7 +38,7 @@ module CC
       private
 
       def analyzable_files
-        @files ||= AnalyzableFiles.new(@engine_config).all
+        @analyzable_files ||= AnalyzableFiles.new(@engine_config).all
       end
 
       def coffeelint_results

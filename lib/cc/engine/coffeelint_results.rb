@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'shellwords'
 
 module CC
   module Engine
     class CoffeelintResults
-      DEFAULT_CONFIG_PATH = "/code/coffeelint.json".freeze
+      DEFAULT_CONFIG_PATH = "/code/coffeelint.json"
 
       def initialize(directory, files, config)
         @directory = directory
