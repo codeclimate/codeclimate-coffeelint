@@ -1,4 +1,4 @@
-FROM codeclimate/alpine-ruby:b38
+FROM ruby:2.7.5-alpine3.15
 
 WORKDIR /usr/src/app
 COPY Gemfile /usr/src/app/
@@ -6,7 +6,7 @@ COPY Gemfile.lock /usr/src/app/
 COPY npm-shrinkwrap.json /usr/src/app/
 COPY package.json /usr/src/app/
 
-RUN apk --update add nodejs nodejs-npm ruby ruby-dev ruby-bundler build-base && \
+RUN apk --update add nodejs npm ruby ruby-dev ruby-bundler build-base && \
     npm install && \
     bundle install -j 4 && \
     apk del build-base && rm -fr /usr/share/ri
