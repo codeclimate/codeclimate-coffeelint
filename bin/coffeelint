@@ -1,14 +1,16 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), "../lib")))
 
 require 'cc/engine/coffeelint'
 
-if File.exists?("/config.json")
-  engine_config = JSON.parse(File.read("/config.json"))
-else
-  engine_config = {}
-end
+engine_config = if File.exist?("/config.json")
+                  JSON.parse(File.read("/config.json"))
+                else
+                  {}
+                end
 
 CC::Engine::Coffeelint.new(
-  directory: "/code", engine_config: engine_config, io: STDOUT
+  directory: "/code", engine_config: engine_config, io: $stdout
 ).run

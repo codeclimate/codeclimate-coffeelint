@@ -7,6 +7,8 @@ Style/ClassAndModuleChildren:
 Metrics/LineLength:
   Exclude:
     - 'spec/**/*'
+Metrics/MethodLength:
+  Max: 20
 Style/Documentation:
   Enabled: false
 Style/FileName:
@@ -16,9 +18,13 @@ Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%w': '[]'
     '%W': '[]'
+Style/SignalException:
+  EnforcedStyle: 'semantic'
 Style/StringLiterals:
   Enabled: false
-Style/TrailingComma:
+Style/TrailingCommaInLiteral:
+  Enabled: false
+Style/TrailingCommaInArguments:
   Enabled: false
 Style/DotPosition:
   EnforcedStyle: 'trailing'

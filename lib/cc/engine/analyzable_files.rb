@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CC
   module Engine
     class AnalyzableFiles
@@ -8,11 +10,15 @@ module CC
       end
 
       def all
-        @results ||= if (include_paths = @config["include_paths"])
-          filter_files(include_paths)
-        else
-          fail "error: `include_paths' not provided\nThis is probably due to an old version of the codeclimate CLI being used. Please try updating."
-        end
+        @all ||= if (include_paths = @config["include_paths"])
+                   filter_files(include_paths)
+                 else
+                   fail <<~EOS
+                     error: `include_paths' not provided\n
+                     This is probably due to an old version of the codeclimate CLI being used.
+                     Please try updating.
+                   EOS
+                 end
       end
 
       private
