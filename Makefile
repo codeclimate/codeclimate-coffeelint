@@ -1,6 +1,5 @@
 .PHONY: image citest test release
 
-REPO_NAME ?= codeclimate-coffeelint
 IMAGE_NAME ?= codeclimate/codeclimate-coffeelint
 RELEASE_REGISTRY ?= codeclimate
 RELEASE_TAG ?= latest
